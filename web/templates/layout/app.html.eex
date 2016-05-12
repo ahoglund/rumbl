@@ -15,24 +15,26 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="/">Rumbl</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
+          <%= if @current_user do %>
+            <div class="navbar-form navbar-right">
+              <span class="navbar-username"><%= @current_user.username %>&nbsp;&nbsp;&nbsp;</span>
+              <%= link "Log Out", to: session_path(@conn, :delete, @current_user), class: "btn btn-primary", method: "delete" %>
             </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+          <% else %>
+            <%= form_for @conn, session_path(@conn, :create), [as: :session, class: "navbar-form navbar-right"], fn f -> %>
+              <div class="form-group">
+                <%= text_input f, :username, placeholder: "Username", class: "form-control" %>
+              </div>
+              <div class="form-group">
+                <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
+              </div>
+              <%= submit "Login", class: "btn btn-primary" %>
+              <%= link "Register", to: user_path(@conn, :new), class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
@@ -49,13 +51,12 @@
             <%= render @view_module, @view_template, assigns %>
           </main></div>
       </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; 2015 Rumbl, Inc.</p>
-      </footer>
     </div> <!-- /container -->
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">&copy; 2015 Rumbl, Inc.</p>
+      </div>
+    </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
