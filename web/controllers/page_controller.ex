@@ -1,7 +1,9 @@
 defmodule Rumbl.PageController do
   use Rumbl.Web, :controller
+  alias Rumbl.Video
 
   def index(conn, _params) do
-    render conn, "index.html"
+    videos = Repo.all(Video)
+    render(conn, "index.html", videos: videos)
   end
 end

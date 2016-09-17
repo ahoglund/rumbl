@@ -19,10 +19,20 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <%= if @current_user do %>
-            <div class="navbar-form navbar-right">
-              <span class="navbar-username"><%= @current_user.username %>&nbsp;&nbsp;&nbsp;</span>
-              <%= link "Log Out", to: session_path(@conn, :delete, @current_user), class: "btn btn-primary", method: "delete" %>
-            </div>
+            <ul class="nav navbar-nav">
+              <li><%= link "My Videos", to: video_path(@conn, :index) %></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_user.username %>&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><%= link String.capitalize(@current_user.username), to: user_path(@conn, :show, @current_user.id) %></li>
+                  <li>
+                    <%= link "Log Out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "form-control" %>
+                  </li>
+                </ul>
+              </li>
+            </ul>
           <% else %>
             <%= form_for @conn, session_path(@conn, :create), [as: :session, class: "navbar-form navbar-right"], fn f -> %>
               <div class="form-group">
