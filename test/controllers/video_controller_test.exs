@@ -51,7 +51,7 @@ defmodule Rumbl.VideoControllerTest do
   end
 
   @tag login_as: "bob"
-  test "returns error when video params invalid",  %{conn: conn, user: user} do
+  test "returns error when video params invalid",  %{conn: conn, user: _user} do
     count_before = video_count(Video)
     conn = post conn, video_path(conn, :create), video: @invalid_attrs
     assert html_response(conn, 200) =~ "error"

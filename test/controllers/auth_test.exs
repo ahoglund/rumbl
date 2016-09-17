@@ -76,7 +76,7 @@ defmodule Rumbl.AuthTest do
   end
 
   test "restrict login with invalid password", %{conn: conn} do
-    user = insert_user(username: "test_user", password: "secret")
+    insert_user(username: "test_user", password: "secret")
     assert {:error, :unauthorized, _conn} =
       Auth.login_by_username_and_pass(conn,
         "test_user", "badpassword", repo: Repo)
